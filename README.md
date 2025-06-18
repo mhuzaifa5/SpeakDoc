@@ -6,6 +6,7 @@ It allows users to upload PDF documents, ask questions about their content (via 
 
 ---
 ![SpeakDoc Application Screenshot](Voice-to-Voice-RAG-Workflow.webp)
+![SpeakDoc-Demo-Video](SpeakDoc-Demo.mp4)
 
 ## ✨ Features
 
