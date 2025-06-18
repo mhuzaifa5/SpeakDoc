@@ -513,31 +513,7 @@ st.markdown("## 📈 Project Workflow")
 st.markdown("""
 Below is a basic workflow chart illustrating the core processes of the SpeakDoc application:
 
-```mermaid
-graph TD
-    A[Start] --> B(User Uploads PDF Document)
-    B --> C{Document Processing}
-    C --> C1(Load PDF)
-    C1 --> C2(Split into Chunks)
-    C2 --> C3(Generate Embeddings)
-    C3 --> D(Initialize Weaviate & Load Data)
-    D --> E(Initialize RAG Components)
-    E --> F{User Interaction}
 
-    F --> F1[Type Query]
-    F1 --> F2(Click 'Get Answer' Button)
-    F2 --> G(RAG Process: Retrieve & Generate Answer)
-
-    F --> F3[Click Microphone Icon]
-    F3 --> F4(Record Audio)
-    F4 --> F5(Transcribe Audio using Whisper)
-    F5 --> F6(Transcribed Text Populates Query Box)
-    F6 --> G
-
-    G --> H(Display Answer)
-    H --> I(Speak Answer using gTTS)
-    I --> J[End]
-```
 **Explanation of the Workflow:**
 
 1.  **Start:** The application begins.
