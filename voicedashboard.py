@@ -1,9 +1,11 @@
-# --- Important Library Imports for this Showcase App ---
 import streamlit as st
 
 # --- Your Project's Dashboard.py Code (as a string) ---
 # This multiline string contains the *entire* content of your dashboard.py file.
 # It will be displayed using st.code().
+# Ensure all backslashes in paths are escaped (e.g., C:\\Users\\...)
+# And double-check any internal quotes within the original string are also escaped if necessary,
+# although Streamlit's markdown often handles this if the outer string uses triple quotes.
 DASHBOARD_CODE = """
 # --- Important Library Imports ---
 import streamlit as st
@@ -23,14 +25,13 @@ from langchain.chains import RetrievalQA
 # Weaviate client and configuration
 import weaviate
 from weaviate.auth import AuthApiKey
-from weaviate.classes.init import Auth
 from weaviate.collections.classes.config import Property, DataType, Vectorizers
 
 # Voice Assistance Libraries
 from gtts import gTTS
 import io
 import pygame
-import whisper
+import whisper # This is the library with known compatibility issues on some Python versions
 import pyaudio
 import wave
 
@@ -460,6 +461,165 @@ st.markdown("""
 * **Environment Variables:** `python-dotenv`
 """)
 
-st.code('DASHBOARD_CODE')
-
 # --- Setup and Installation Section (simplified for showcase) ---
+st.markdown("## 🚀 Setup and Installation")
+st.markdown("""
+This project can be run locally. Here's a high-level overview of the steps:
+
+### 1. Clone the Repository
+```bash
+git clone <your-repository-url>
+cd <your-repository-name>
+```
+
+### 2. Create a Virtual Environment (Recommended)
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: .\\venv\\Scripts\\activate
+```
+
+### 3. Install Dependencies
+You'll need to install the libraries listed in the 'Tech Stack' section. A `requirements.txt` file (typically created with `pip freeze > requirements.txt`) would contain these.
+```bash
+pip install -r requirements.txt
+```
+*(Ensure `pyaudio`'s system-level dependencies are met for your OS. See common issues in the official documentation for `pyaudio`.)*
+
+### 4. Configure Environment Variables
+Create a file named `.env` in the root directory of the project and add your API keys for Weaviate and Google Gemini.
+
+```ini
+WEAVIATE_URL="your_weaviate_cluster_url"
+WEAVIATE_API_KEY="your_weaviate_api_key"
+GEMINI_API_KEY="your_google_gemini_api_key"
+```
+
+### 5. Run the Application
+Once dependencies are installed and environment variables are set, run the main application file.
+```bash
+streamlit run dashboard.py
+```
+This will open the application in your default web browser.
+""")
+
+# --- Usage Section ---
+st.markdown("## 💡 Usage")
+st.markdown("""
+Once the application is running:
+
+1.  **Upload PDF:** Use the file uploader to select and upload your PDF document.
+2.  **Wait for Processing:** The application will process the document (chunking, embedding, Weaviate setup, RAG initialization).
+3.  **Ask a Question (Text or Voice):**
+    * **Text Input:** Type your question directly into the query box.
+    * **Voice Input:** Click the microphone icon next to the input box, speak your question, and the transcription will appear in the query box.
+4.  **Get Answer:** The system will retrieve relevant information and generate an answer, which will be displayed and spoken aloud.
+""")
+
+# --- Deployment Note (Red Ribbon) ---
+st.markdown("""
+<div style="background-color: #ffe0e0; border-left: 6px solid #ff0000; padding: 1rem; border-radius: 0.5rem; margin-top: 2rem; margin-bottom: 2rem;">
+    <h3 style="color: #ff0000; margin-top: 0; margin-bottom: 0.5rem;">🚨 Important Note on Deployment and Whisper Compatibility 🚨</h3>
+    <p style="color: #cc0000; margin-bottom: 0.5rem;">
+        Please be aware that integrating `Whisper` (specifically `openai-whisper`) with Streamlit for cloud deployment can be challenging due to several factors:
+    </p>
+    <ul style="color: #cc0000; margin-left: 1.5rem; list-style-type: disc;">
+        <li>
+            <strong>Compatibility Issues:</strong> `openai-whisper` and some of its underlying dependencies (like `llvmlite` and `numba`) have known incompatibilities or complex build requirements with newer Python versions (e.g., Python 3.13.5, which is often used in modern deployment environments). This can lead to persistent build failures during dependency installation.
+        </li>
+        <li>
+            <strong>Resource Limitations:</strong> Deploying advanced models like Whisper often requires significant computational resources (CPU/RAM) which might exceed the limits of free-tier or basic cloud deployment plans, leading to very slow performance or crashes.
+        </li>
+        <li>
+            <strong>Environment Setup:</strong> The specific build tools and underlying system libraries required for `Whisper` might not be readily available or easily configurable in all managed cloud environments.
+        </li>
+    </ul>
+    <p style="color: #cc0000; margin-top: 0.5rem;">
+        Due to these complexities and limited resources, we have opted not to deploy this particular version of the application to a live public URL at this time. Instead, we are showcasing the project's functionality through the demo video below and providing the complete application code for local execution.
+    </p>
+</div>
+""", unsafe_allow_html=True)
+
+
+# --- Project Demo Video ---
+st.markdown("## ▶️ Project Demo Video")
+# Replace <your-github-username> and <your-repository-name> with your actual GitHub details
+# Ensure the video file 'speakdoc-demo.mp4' is in your repository.
+# For raw video, GitHub URL pattern is usually:
+# https://raw.githubusercontent.com/<your-github-username>/<your-repository-name>/main/speakdoc-demo.mp4
+# Assuming 'speakdoc' is the repository name based on logs, and 'mhuzaifa5' is a placeholder username
+# PLEASE REPLACE THIS URL WITH YOUR ACTUAL RAW GITHUB VIDEO URL!
+video_url = "https://raw.githubusercontent.com/mhuzaifa5/speakdoc/main/speakdoc-demo.mp4" # Placeholder URL
+
+st.video(video_url, format="video/mp4", start_time=0)
+st.markdown(f"*(If the video doesn't load directly, you can also view it [here]({video_url}))*")
+
+
+# --- Project Code Section ---
+st.markdown("## 💻 Project Code (`dashboard.py`)")
+st.markdown("""
+Below is the complete Python code for the main RAG application (`dashboard.py`). You can copy and run this code on your local machine after setting up the environment as described in the 'Setup and Installation' section.
+""")
+st.code(DASHBOARD_CODE, language="python")
+
+# --- Project Workflow Section ---
+st.markdown("## 📈 Project Workflow")
+st.markdown("""
+Below is a basic workflow chart illustrating the core processes of the SpeakDoc application:
+
+```mermaid
+graph TD
+    A[Start] --> B(User Uploads PDF Document)
+    B --> C{Document Processing}
+    C --> C1(Load PDF)
+    C1 --> C2(Split into Chunks)
+    C2 --> C3(Generate Embeddings)
+    C3 --> D(Initialize Weaviate & Load Data)
+    D --> E(Initialize RAG Components)
+    E --> F{User Interaction}
+
+    F --> F1[Type Query]
+    F1 --> F2(Click 'Get Answer' Button)
+    F2 --> G(RAG Process: Retrieve & Generate Answer)
+
+    F --> F3[Click Microphone Icon]
+    F3 --> F4(Record Audio)
+    F4 --> F5(Transcribe Audio using Whisper)
+    F5 --> F6(Transcribed Text Populates Query Box)
+    F6 --> G
+
+    G --> H(Display Answer)
+    H --> I(Speak Answer using gTTS)
+    I --> J[End]
+```
+**Explanation of the Workflow:**
+
+1.  **Start:** The application begins.
+2.  **User Uploads PDF Document:** The user provides a PDF file.
+3.  **Document Processing:** The uploaded PDF undergoes several steps:
+    * **Load PDF:** The document content is loaded.
+    * **Split into Chunks:** The document is divided into smaller, manageable text chunks.
+    * **Generate Embeddings:** Each text chunk is converted into a numerical vector (embedding).
+4.  **Initialize Weaviate & Load Data:** A connection is established with the Weaviate vector database, and the document embeddings are loaded into a new or existing collection.
+5.  **Initialize RAG Components:** The core components for Retrieval-Augmented Generation are set up, including the vector store, retriever, Large Language Model (LLM - Gemini-1.5-Flash), and the RetrievalQA chain.
+6.  **User Interaction:** The user can now query the document using one of two methods:
+    * **Type Query:** The user types their question into the input box and clicks the "Get Answer" button.
+    * **Click Microphone Icon:** The user clicks the microphone icon next to the input box:
+        * **Record Audio:** Their voice query is recorded.
+        * **Transcribe Audio using Whisper:** The recorded audio is converted into text using the Whisper ASR model.
+        * **Transcribed Text Populates Query Box:** The transcribed text automatically appears in the input query box, making the interaction seamless.
+7.  **RAG Process: Retrieve & Generate Answer:** Whether typed or spoken, the query triggers the RAG process. Relevant document chunks are retrieved from Weaviate, and the LLM uses these chunks to formulate an answer.
+8.  **Display Answer:** The generated answer is displayed on the Streamlit interface.
+9.  **Speak Answer using gTTS:** The textual answer is also converted into speech and played aloud to the user.
+10. **End:** The interaction concludes, awaiting further queries.
+""")
+
+# --- Contributing and License ---
+st.markdown("## 🤝 Contributing")
+st.markdown("""
+Contributions are welcome! If you have suggestions for improvements or find any issues, please feel free to open a pull request or an issue on the GitHub repository.
+""")
+
+st.markdown("## 📄 License")
+st.markdown("""
+This project is licensed under the MIT License - see the `LICENSE` file for details.
+""")
