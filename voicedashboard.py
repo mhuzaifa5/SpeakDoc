@@ -495,7 +495,7 @@ st.markdown("## ▶️ Project Demo Video")
 # https://raw.githubusercontent.com/<your-github-username>/<your-repository-name>/main/speakdoc-demo.mp4
 # Assuming 'speakdoc' is the repository name based on logs, and 'mhuzaifa5' is a placeholder username
 # PLEASE REPLACE THIS URL WITH YOUR ACTUAL RAW GITHUB VIDEO URL!
-video_url = "main/SpeakDoc-Demo.mp4" # Placeholder URL
+video_url = "https://raw.githubusercontent.com/mhuzaifa5/speakdoc/main/SpeakDoc-Demo.mp4" # Placeholder URL
 
 st.video(video_url, format="video/mp4", start_time=0)
 st.markdown(f"*(If the video doesn't load directly, you can also view it [here]({video_url}))*")
