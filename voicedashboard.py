@@ -461,46 +461,6 @@ st.markdown("""
 * **Environment Variables:** `python-dotenv`
 """)
 
-# --- Setup and Installation Section (simplified for showcase) ---
-st.markdown("## 🚀 Setup and Installation")
-st.markdown("""
-This project can be run locally. Here's a high-level overview of the steps:
-
-### 1. Clone the Repository
-```bash
-git clone <your-repository-url>
-cd <your-repository-name>
-```
-
-### 2. Create a Virtual Environment (Recommended)
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: .\\venv\\Scripts\\activate
-```
-
-### 3. Install Dependencies
-You'll need to install the libraries listed in the 'Tech Stack' section. A `requirements.txt` file (typically created with `pip freeze > requirements.txt`) would contain these.
-```bash
-pip install -r requirements.txt
-```
-*(Ensure `pyaudio`'s system-level dependencies are met for your OS. See common issues in the official documentation for `pyaudio`.)*
-
-### 4. Configure Environment Variables
-Create a file named `.env` in the root directory of the project and add your API keys for Weaviate and Google Gemini.
-
-```ini
-WEAVIATE_URL="your_weaviate_cluster_url"
-WEAVIATE_API_KEY="your_weaviate_api_key"
-GEMINI_API_KEY="your_google_gemini_api_key"
-```
-
-### 5. Run the Application
-Once dependencies are installed and environment variables are set, run the main application file.
-```bash
-streamlit run dashboard.py
-```
-This will open the application in your default web browser.
-""")
 
 # --- Usage Section ---
 st.markdown("## 💡 Usage")
@@ -518,23 +478,10 @@ Once the application is running:
 # --- Deployment Note (Red Ribbon) ---
 st.markdown("""
 <div style="background-color: #ffe0e0; border-left: 6px solid #ff0000; padding: 1rem; border-radius: 0.5rem; margin-top: 2rem; margin-bottom: 2rem;">
-    <h3 style="color: #ff0000; margin-top: 0; margin-bottom: 0.5rem;">🚨 Important Note on Deployment and Whisper Compatibility 🚨</h3>
+    <h3 style="color: #ff0000; margin-top: 0; margin-bottom: 0.5rem;">🚨 Important Note on Deployment 🚨</h3>
     <p style="color: #cc0000; margin-bottom: 0.5rem;">
-        Please be aware that integrating `Whisper` (specifically `openai-whisper`) with Streamlit for cloud deployment can be challenging due to several factors:
-    </p>
-    <ul style="color: #cc0000; margin-left: 1.5rem; list-style-type: disc;">
-        <li>
-            <strong>Compatibility Issues:</strong> `openai-whisper` and some of its underlying dependencies (like `llvmlite` and `numba`) have known incompatibilities or complex build requirements with newer Python versions (e.g., Python 3.13.5, which is often used in modern deployment environments). This can lead to persistent build failures during dependency installation.
-        </li>
-        <li>
-            <strong>Resource Limitations:</strong> Deploying advanced models like Whisper often requires significant computational resources (CPU/RAM) which might exceed the limits of free-tier or basic cloud deployment plans, leading to very slow performance or crashes.
-        </li>
-        <li>
-            <strong>Environment Setup:</strong> The specific build tools and underlying system libraries required for `Whisper` might not be readily available or easily configurable in all managed cloud environments.
-        </li>
-    </ul>
-    <p style="color: #cc0000; margin-top: 0.5rem;">
-        Due to these complexities and limited resources, we have opted not to deploy this particular version of the application to a live public URL at this time. Instead, we are showcasing the project's functionality through the demo video below and providing the complete application code for local execution.
+        Due to compatibility issues with `openai-whisper` and resource limitations on cloud platforms, this version of the app is not publicly deployed.
+        We are showcasing its functionality via the demo video and providing the code for local execution.
     </p>
 </div>
 """, unsafe_allow_html=True)
@@ -548,7 +495,7 @@ st.markdown("## ▶️ Project Demo Video")
 # https://raw.githubusercontent.com/<your-github-username>/<your-repository-name>/main/speakdoc-demo.mp4
 # Assuming 'speakdoc' is the repository name based on logs, and 'mhuzaifa5' is a placeholder username
 # PLEASE REPLACE THIS URL WITH YOUR ACTUAL RAW GITHUB VIDEO URL!
-video_url = "https://raw.githubusercontent.com/mhuzaifa5/speakdoc/main/speakdoc-demo.mp4" # Placeholder URL
+video_url = "main/SpeakDoc-Demo.mp4" # Placeholder URL
 
 st.video(video_url, format="video/mp4", start_time=0)
 st.markdown(f"*(If the video doesn't load directly, you can also view it [here]({video_url}))*")
