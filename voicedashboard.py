@@ -1,3 +1,10 @@
+# --- Important Library Imports for this Showcase App ---
+import streamlit as st
+
+# --- Your Project's Dashboard.py Code (as a string) ---
+# This multiline string contains the *entire* content of your dashboard.py file.
+# It will be displayed using st.code().
+DASHBOARD_CODE = """
 # --- Important Library Imports ---
 import streamlit as st
 import os
@@ -28,7 +35,7 @@ import pyaudio
 import wave
 
 # --- Environment Variable Loading ---
-load_dotenv(dotenv_path=r"C:\Users\PMLS\Desktop\Python\FYP\notebooks\rag.env") # Assumes rag.env is in the same directory
+load_dotenv(dotenv_path=r"C:\\Users\\PMLS\\Desktop\\Python\\FYP\\notebooks\\rag.env") # Assumes rag.env is in the same directory
 
 # Retrieve API keys
 WEAVIATE_URL = os.getenv("WEAVIATE_URL")
@@ -39,15 +46,15 @@ GOOGLE_API_KEY = os.getenv("GEMINI_API_KEY")
 st.set_page_config(page_title="Dynamic RAG Document Query App", layout="wide")
 st.title("📄 Dynamic RAG Document Query App")
 
-st.markdown("""
+st.markdown(\"\"\"
 This application allows you to upload a PDF document, which will then be processed
 to create a searchable knowledge base using a Retrieval-Augmented Generation (RAG) model.
 You can then ask questions about the content of your uploaded document, either by typing or by voice.
-""")
+\"\"\")
 
 # --- Tech Stack Description ---
 st.header("⚙️ Tech Stack Overview")
-st.markdown("""
+st.markdown(\"\"\"
 This application leverages the following technologies:
 -   **Streamlit:** For building the interactive web user interface.
 -   **LangChain:** A framework for developing applications powered by language models.
@@ -63,7 +70,7 @@ This application leverages the following technologies:
 -   **Pygame:** For playing audio responses.
 -   **Whisper:** OpenAI's robust speech-to-text model for transcribing user queries.
 -   **PyAudio:** Python bindings for PortAudio, used for audio input.
-""")
+\"\"\")
 
 # --- Session State Management ---
 # Initialize session state variables to avoid re-running expensive operations
@@ -97,14 +104,14 @@ if not pygame.mixer.get_init():
 
 @st.cache_resource
 def load_whisper_model():
-    """Loads the Whisper model (cached to avoid reloading)."""
+    \"\"\"Loads the Whisper model (cached to avoid reloading).\"\"\"
     st.info("Loading Whisper ASR model... This may take a moment.")
     model = whisper.load_model("small")
     st.success("Whisper model loaded.")
     return model
 
 def text_to_speech(text, lang='en'):
-    """Converts text to speech and plays it."""
+    \"\"\"Converts text to speech and plays it.\"\"\"
     try:
         tts = gTTS(text, lang=lang)
         fp = io.BytesIO()
@@ -122,7 +129,7 @@ def text_to_speech(text, lang='en'):
         st.error(f"Error in text-to-speech: {e}")
 
 def record_audio(record_seconds=10):
-    """Records audio from the microphone and returns the file path."""
+    \"\"\"Records audio from the microphone and returns the file path.\"\"\"
     CHUNK = 1024
     FORMAT = pyaudio.paInt16
     CHANNELS = 1
@@ -159,7 +166,7 @@ def record_audio(record_seconds=10):
     return filename
 
 def transcribe_audio(audio_filepath, model, lang='en'):
-    """Transcribes an audio file using the Whisper model."""
+    \"\"\"Transcribes an audio file using the Whisper model.\"\"\"
     try:
         result = model.transcribe(audio_filepath, language=lang, fp16=False)
         return result["text"]
@@ -172,7 +179,7 @@ def transcribe_audio(audio_filepath, model, lang='en'):
 
 # --- Function to setup Weaviate and load data ---
 def setup_weaviate_and_load_data(docs, embeddings, collection_name, embedding_model):
-    """Sets up Weaviate client, creates collection, and loads document embeddings."""
+    \"\"\"Sets up Weaviate client, creates collection, and loads document embeddings.\"\"\"
     if st.session_state.weaviate_client is None or not st.session_state.weaviate_client.is_ready():
         st.info("Step 4: Setting up Weaviate client...")
         try:
@@ -226,7 +233,7 @@ def setup_weaviate_and_load_data(docs, embeddings, collection_name, embedding_mo
 
 # --- Function to initialize RAG components ---
 def initialize_rag_components(client, collection_name, embedding_model):
-    """Initializes LangChain vector store, retriever, LLM, and QA chain."""
+    \"\"\"Initializes LangChain vector store, retriever, LLM, and QA chain.\"\"\"
     st.info("Step 8: Setting up LangChain components (VectorStore, Retriever, LLM, QA Chain)...")
     try:
         vectorstore = WeaviateVectorStore(
@@ -361,7 +368,7 @@ if st.session_state.rag_initialized_flag:
         if st.button("🎤", key="mic_button", help="Speak your question"):
             audio_filepath = None
             try:
-                audio_filepath = record_audio(record_seconds=5) # Record for 5 seconds
+                audio_filepath = record_audio(record_seconds=10) # Record for 5 seconds
                 if audio_filepath:
                     st.toast("Transcribing speech...", icon="⏳")
                     transcribed_text = transcribe_audio(audio_filepath, st.session_state.whisper_model)
@@ -405,3 +412,54 @@ else:
 #         st.info("Weaviate client closed.")
 #     except Exception as e:
 #         st.warning(f"Could not close Weaviate client gracefully: {e}")
+"""
+
+# --- Streamlit App Setup ---
+st.set_page_config(page_title="SpeakDoc Project Showcase", layout="wide")
+st.title("📄 SpeakDoc Project Showcase")
+
+# --- Project Title and Description ---
+st.markdown("""
+# 📄 SpeakDoc: Talk to your PDFs, get instant answers.
+
+This project is a dynamic Retrieval-Augmented Generation (RAG) application built with Streamlit, LangChain, and Weaviate, featuring an integrated voice assistant for natural language interaction. It allows users to upload PDF documents, ask questions about their content (via text or voice), and receive spoken and textual answers.
+""")
+
+# --- Features Section ---
+st.markdown("## ✨ Features")
+st.markdown("""
+* **PDF Document Upload:** Easily upload your PDF documents to create a custom knowledge base.
+* **Automated Document Processing:**
+    * Loads PDF content.
+    * Splits documents into manageable chunks.
+    * Generates embeddings for efficient retrieval.
+* **Dynamic Knowledge Base:** Utilizes Weaviate as a vector database to store and retrieve document embeddings.
+* **Retrieval-Augmented Generation (RAG):** Leverages Google's Gemini-1.5-Flash LLM with LangChain to provide accurate answers based on the uploaded document's content.
+* **Voice Input (Speech-to-Text):**
+    * Click a microphone icon to speak your questions.
+    * Utilizes OpenAI's Whisper model for highly accurate speech transcription.
+    * Transcribed text automatically populates the query input box.
+* **Voice Output (Text-to-Speech):** Answers generated by the LLM are automatically converted to speech and played aloud using Google Text-to-Speech (gTTS).
+* **Intuitive Streamlit UI:** A clean and interactive web interface for seamless user experience.
+""")
+
+# --- Tech Stack Section ---
+st.markdown("## ⚙️ Tech Stack")
+st.markdown("""
+* **Frontend:** Streamlit
+* **Backend/Orchestration:** LangChain
+* **Vector Database:** Weaviate
+* **Large Language Model (LLM):** Google Gemini-1.5-Flash (via `langchain-google-genai`)
+* **Embeddings:** Sentence Transformers (`all-mpnet-base-v2`)
+* **PDF Loading:** `PyPDFLoader`
+* **Text Splitting:** `RecursiveCharacterTextSplitter`
+* **Speech-to-Text (STT):** OpenAI Whisper
+* **Text-to-Speech (TTS):** gTTS
+* **Audio Playback:** Pygame
+* **Audio Recording:** PyAudio
+* **Environment Variables:** `python-dotenv`
+""")
+
+st.code('DASHBOARD_CODE')
+
+# --- Setup and Installation Section (simplified for showcase) ---
