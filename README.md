@@ -5,7 +5,7 @@
 It allows users to upload PDF documents, ask questions about their content (via text or voice), and receive **spoken and textual answers**.
 
 ---
-![SpeakDoc Application Screenshot](path/to/your/screenshot.png)
+![SpeakDoc Application Screenshot](Voice-to-Voice-RAG-Workflow.webp)
 
 ## ✨ Features
 
